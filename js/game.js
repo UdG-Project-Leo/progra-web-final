@@ -37,7 +37,7 @@ function resetGame() {
 
 		distance: 0,
 		ratioSpeedDistance: 50,
-		energy: 100,
+		energy: 25,
 		ratioSpeedEnergy: 3,
 
 		level: 1,
@@ -735,6 +735,8 @@ function loop() {
 
 		if (airplane.mesh.position.y < -200) {
 			showReplay();
+			console.log(username, Math.floor(game.distance));
+			saveScore(username, Math.floor(game.distance));
 			game.status = "waitingReplay";
 
 		}
@@ -759,7 +761,6 @@ function loop() {
 	sea.moveWaves();
 
 	renderer.render(scene, camera);
-	console.log(game.status);
 	requestAnimationFrame(loop);
 }
 
@@ -859,8 +860,6 @@ function init(event) {
 	fieldLevel = document.getElementById("levelValue");
 	levelCircle = document.getElementById("levelCircleStroke");
 
-	
-
 	resetGame();
 	createScene();
 
@@ -877,9 +876,114 @@ function init(event) {
 	document.addEventListener('mouseup', handleMouseUp, false);
 	document.addEventListener('touchend', handleTouchEnd, false);
 
-	game.status = 'enterUsername';
+	enterUsername();
 
 	loop();
 }
+
+// User
+var username;
+var changeUser = false;
+
+// Username inputs
+var usernameInput = document.getElementById('usernameInput');
+var usernameLabel = document.getElementById('usernameLabel');
+var changeUser = document.getElementById('changeUser');
+var btnPlay = document.getElementById('playButton');
+
+// Change user
+changeUser.addEventListener('click', event => {
+	changeUser = true;
+	game.status = 'gameover';
+	modal.show();
+});
+
+// Username entry
+const modalContainer = document.getElementById("usernameModal");
+const modal = new bootstrap.Modal(modalContainer);
+
+modalContainer.addEventListener('hidden.bs.modal', setUsername);
+btnPlay.addEventListener('click', _ => modal.hide());
+
+function setUsername() {
+	username = usernameInput.value == '' ? 'guest' : usernameInput.value;
+	usernameLabel.innerText = username;
+
+	if (!changeUser) {
+		game.status = 'playing';
+	} else {
+		changeUser = false;
+		resetGame();
+		hideReplay();
+	}
+
+	usernameInput.value = '';
+}
+
+function enterUsername() {
+	game.status = 'enterUsername';
+	modal.show();
+}
+
+// Firebase Configuration
+class Score {
+  constructor(username, score) {
+    this.username = username;
+    this.score = score;
+  }
+}
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyD78GRSJdV7V4UtQjAax_zqqr_L9hULfdk",
+  authDomain: "proyecto-final-progra-web.firebaseapp.com",
+  projectId: "proyecto-final-progra-web",
+  storageBucket: "proyecto-final-progra-web.appspot.com",
+  messagingSenderId: "933404112823",
+  appId: "1:933404112823:web:7295ee3b003fb0de745a32"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+
+
+// Database methods
+function saveScore(username, score) {
+  var scoresRef = database.ref('scores/' + username);
+  var newScoreRef = scoresRef.push();
+  newScoreRef.set({
+    score: score
+  });
+}
+
+function getUserScores(username) {
+  var scoresRef = database.ref('scores/' + username);
+  scoresRef.once('value', (snapshot) => {
+    console.log(snapshot.val());
+  });
+}
+
+function getTop10Scores() {
+  var scoresRef = database.ref('scores');
+  var scores = [];
+
+  scoresRef.once('value', (snapshot) => {
+    firebaseInfo.innerText = JSON.stringify(snapshot.val(),null, 4);
+    var users = snapshot.val();
+    Object.keys(users).forEach(userKey => {
+      Object.keys(users[userKey]).forEach(sKey => {
+        scores.push(new Score(userKey, users[userKey][sKey].score));        
+      });
+    });
+
+    scores.sort((a, b) => b.score - a.score);
+    if (scores.length > 10) {
+      scores = scores.slice(0,10);
+    }
+
+    console.log(scores);
+  });
+}
+
 
 window.addEventListener('load', init, false);

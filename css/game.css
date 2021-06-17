@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 .game-holder {
 	position: absolute;
 	width: 100%;
@@ -51,7 +55,7 @@
 
 .score {
 	width: 100%;
-	margin: 2em 0 0;
+	margin: 0;
 	text-align: center;
 	white-space: nowrap;
 }
@@ -71,11 +75,33 @@
 .score__label {
 	font-size: 9px;
 	position: relative;
-	margin: 0 0 0.5em 0;
+	margin: 0 0 0 0;
 	text-align: center;
 	letter-spacing: 3px;
 	text-transform: uppercase;
 	color: #d1b790;
+}
+
+.score__name {
+	font-size: 32px;
+	position: relative;
+	margin: 0;
+	text-align: center;
+	letter-spacing: 3px;
+	text-transform: capitalize;
+	color: #d1b790;
+}
+
+.score__name::after {
+	content: '';
+	position: absolute;
+	background-color: #d1b790;
+	bottom: 5px;
+	left:50%;
+	transform:translate(-50%,-50%);
+	text-align:center;
+	height: 1px;
+	width: 250px;
 }
 
 .score__value {
@@ -179,4 +205,11 @@
 	.header h2 {
 		letter-spacing: 0.65em;
 	}
+}
+
+#changeUser {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	background-color: transparent;
 }
