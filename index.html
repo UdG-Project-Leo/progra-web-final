@@ -1,37 +1,72 @@
-<html>
-    <head>
-        
-		<link rel="stylesheet" type="text/css" href="css/game.css" />
-        <script type="text/javascript" src="js/TweenMax.min.js"></script>
-        <script type="text/javascript" src="js/three.min.js"></script>
-        <script type="text/javascript" src="js/game.js" ></script>
+<!doctype html>
+<html lang="en">
 
-    </head>
-    <body>
-        <div class="game-holder" id="gameHolder">
-			<div class="header">
-				<div class="score" id="score">
-					<div class="score__content" id="level">
-						<div class="score__label">level</div>
-						<div class="score__value score__value--level" id="levelValue">1</div>
-						<svg class="level-circle" id="levelCircle" viewbox="0 0 200 200">
-							<circle id="levelCircleBgr" r="80" cx="100" cy="100" fill="none" stroke="#d1b790" stroke-width="24px" />
-							<circle id="levelCircleStroke" r="80" cx="100" cy="100" fill="none" #f25346 stroke="#68c3c0" stroke-width="14px" stroke-dasharray="502" />
-						</svg>
-					</div>
-					<div class="score__content" id="dist">
-						<div class="score__label">distance</div>
-						<div class="score__value score__value--dist" id="distValue">000</div>
-					</div>
-					<div class="score__content" id="energy">
-						<div class="score__label">energy</div>
-						<div class="score__value score__value--energy" id="energyValue">
-							<div class="energy-bar" id="energyBar"></div>
-						</div>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/game.css" />
+</head>
+
+<body>
+	<div class="game-holder" id="gameHolder">
+		<div class="header">
+			<div class="score__name" id="usernameLabel"></div>
+			<div class="score" id="score">
+				<div class="score__content" id="level">
+					<div class="score__label">level</div>
+					<div class="score__value score__value--level" id="levelValue">1</div>
+					<svg class="level-circle" id="levelCircle" viewbox="0 0 200 200">
+						<circle id="levelCircleBgr" r="80" cx="100" cy="100" fill="none" stroke="#d1b790" stroke-width="24px" />
+						<circle id="levelCircleStroke" r="80" cx="100" cy="100" fill="none" #f25346 stroke="#68c3c0"
+							stroke-width="14px" stroke-dasharray="502" />
+					</svg>
+				</div>
+				<div class="score__content" id="dist">
+					<div class="score__label">distance</div>
+					<div class="score__value score__value--dist" id="distValue">000</div>
+				</div>
+				<div class="score__content" id="energy">
+					<div class="score__label">energy</div>
+					<div class="score__value score__value--energy" id="energyValue">
+						<div class="energy-bar" id="energyBar"></div>
 					</div>
 				</div>
 			</div>
-        <div class="world" id="world"></div>
-        <div class="message message--replay" id="replayMessage">Click to Replay</div>
-    </body>
+		</div>
+		<div class="world" id="world"></div>
+		<div class="message message--replay" id="replayMessage">Click to Replay</div>
+
+		<button type="button" class="btn btn-primary" id="changeUser">Change User</button>
+		<!-- Username entrie modal -->
+		<div class="modal fade" id="usernameModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Enter a Username</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="mb-3">
+							<input type="email" class="form-control" id="usernameInput">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="playButton">Play now!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+			crossorigin="anonymous"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+		<script type="text/javascript" src="js/TweenMax.min.js"></script>
+		<script type="text/javascript" src="js/three.min.js"></script>
+		<script type="text/javascript" src="js/game.js"></script>
+</body>
+
 </html>
