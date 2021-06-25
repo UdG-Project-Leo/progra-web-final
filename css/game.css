@@ -97,9 +97,9 @@
 	position: absolute;
 	background-color: #d1b790;
 	bottom: 5px;
-	left:50%;
-	transform:translate(-50%,-50%);
-	text-align:center;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
 	height: 1px;
 	width: 250px;
 }
@@ -186,15 +186,27 @@
 }
 
 @-webkit-keyframes blinking {
-	0% { opacity: 1; }
-	50% { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes blinking {
-	0% { opacity: 1; }
-	50% { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @media screen and (max-width: 40em) {
@@ -214,9 +226,21 @@
 	background-color: transparent;
 }
 
-#topScores {
+#userScores {
 	position: absolute;
 	top: 4em;
 	left: 1em;
 	background-color: transparent;
+}
+
+#topScores {
+	position: absolute;
+	top: 7em;
+	left: 1em;
+	background-color: transparent;
+}
+
+.scroll-table {
+	height: 500px;
+	overflow: scroll;
 }
