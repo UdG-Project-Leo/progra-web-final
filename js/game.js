@@ -37,7 +37,7 @@ function resetGame() {
 
 		distance: 0,
 		ratioSpeedDistance: 50,
-		energy: 25,
+		energy: 250,
 		ratioSpeedEnergy: 3,
 
 		level: 1,
@@ -925,22 +925,36 @@ function enterUsername() {
 	modal.show();
 }
 
+// Top Scores
+const topModalContainer = document.getElementById("topScoresModal");
+const topModal = new bootstrap.Modal(topModalContainer);
+const btnTopScores = document.getElementById("topScores");
+var tbodyRef = document.getElementById('topScoresTable').getElementsByTagName('tbody')[0];
+
+topModalContainer.addEventListener('shown.bs.modal', () => {
+	getTop10Scores();
+});
+
+btnTopScores.addEventListener('click', _ => {
+	topModal.show();
+});
+
 // Firebase Configuration
 class Score {
-  constructor(username, score) {
-    this.username = username;
-    this.score = score;
-  }
+	constructor(username, score) {
+		this.username = username;
+		this.score = score;
+	}
 }
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyD78GRSJdV7V4UtQjAax_zqqr_L9hULfdk",
-  authDomain: "proyecto-final-progra-web.firebaseapp.com",
-  projectId: "proyecto-final-progra-web",
-  storageBucket: "proyecto-final-progra-web.appspot.com",
-  messagingSenderId: "933404112823",
-  appId: "1:933404112823:web:7295ee3b003fb0de745a32"
+	apiKey: "AIzaSyD78GRSJdV7V4UtQjAax_zqqr_L9hULfdk",
+	authDomain: "proyecto-final-progra-web.firebaseapp.com",
+	projectId: "proyecto-final-progra-web",
+	storageBucket: "proyecto-final-progra-web.appspot.com",
+	messagingSenderId: "933404112823",
+	appId: "1:933404112823:web:7295ee3b003fb0de745a32"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -949,40 +963,54 @@ var database = firebase.database();
 
 // Database methods
 function saveScore(username, score) {
-  var scoresRef = database.ref('scores/' + username);
-  var newScoreRef = scoresRef.push();
-  newScoreRef.set({
-    score: score
-  });
+	var scoresRef = database.ref('scores/' + username);
+	var newScoreRef = scoresRef.push();
+	newScoreRef.set({
+		score: score
+	});
 }
 
 function getUserScores(username) {
-  var scoresRef = database.ref('scores/' + username);
-  scoresRef.once('value', (snapshot) => {
-    console.log(snapshot.val());
-  });
+	var scoresRef = database.ref('scores/' + username);
+	scoresRef.once('value', (snapshot) => {
+		console.log(snapshot.val());
+	});
 }
 
 function getTop10Scores() {
-  var scoresRef = database.ref('scores');
-  var scores = [];
+	var scoresRef = database.ref('scores');
+	var scores = [];
 
-  scoresRef.once('value', (snapshot) => {
-    firebaseInfo.innerText = JSON.stringify(snapshot.val(),null, 4);
-    var users = snapshot.val();
-    Object.keys(users).forEach(userKey => {
-      Object.keys(users[userKey]).forEach(sKey => {
-        scores.push(new Score(userKey, users[userKey][sKey].score));        
-      });
-    });
+	scoresRef.once('value', (snapshot) => {
+		var users = snapshot.val();
+		Object.keys(users).forEach(userKey => {
+			Object.keys(users[userKey]).forEach(sKey => {
+				scores.push(new Score(userKey, users[userKey][sKey].score));
+			});
+		});
 
-    scores.sort((a, b) => b.score - a.score);
-    if (scores.length > 10) {
-      scores = scores.slice(0,10);
-    }
+		scores.sort((a, b) => b.score - a.score);
+		if (scores.length > 10) {
+			scores = scores.slice(0, 10);
+		}
 
-    console.log(scores);
-  });
+		scores.forEach((score, i) => {
+			var newRow = tbodyRef.insertRow();
+	
+			// Insert a cell at the end of the row
+			var indexCell = newRow.insertCell();
+			var userCell = newRow.insertCell();
+			var scoreCell = newRow.insertCell();
+			
+			indexCell.outerHTML = `<th>${i + 1}</th>`;
+	
+			// Append a text node to the cell
+			userCell.appendChild(document.createTextNode(score.username));
+			scoreCell.appendChild(document.createTextNode(score.score));
+		});
+
+		console.log(scores);
+	});
 }
 
 

@@ -213,3 +213,10 @@
 	left: 1em;
 	background-color: transparent;
 }
+
+#topScores {
+	position: absolute;
+	top: 4em;
+	left: 1em;
+	background-color: transparent;
+}
