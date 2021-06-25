@@ -38,6 +38,9 @@
 		<div class="message message--replay" id="replayMessage">Click to Replay</div>
 
 		<button type="button" class="btn btn-primary" id="changeUser">Change User</button>
+		<button type="button" class="btn btn-primary" id="topScores">Top Scores</button>
+
+
 		<!-- Username entrie modal -->
 		<div class="modal fade" id="usernameModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -50,6 +53,35 @@
 						<div class="mb-3">
 							<input type="email" class="form-control" id="usernameInput">
 						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="playButton">Play now!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Top Scores entrie modal -->
+		<div class="modal fade" id="topScoresModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Top Scores</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<table class="table" id="topScoresTable">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Username</th>
+									<th scope="col">Score</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="playButton">Play now!</button>
