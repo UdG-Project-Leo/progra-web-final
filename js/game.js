@@ -37,7 +37,7 @@ function resetGame() {
 
 		distance: 0,
 		ratioSpeedDistance: 50,
-		energy: 250,
+		energy: 100,
 		ratioSpeedEnergy: 3,
 
 		level: 1,
@@ -735,7 +735,6 @@ function loop() {
 
 		if (airplane.mesh.position.y < -200) {
 			showReplay();
-			console.log(username, Math.floor(game.distance));
 			saveScore(username, Math.floor(game.distance));
 			game.status = "waitingReplay";
 
@@ -929,14 +928,32 @@ function enterUsername() {
 const topModalContainer = document.getElementById("topScoresModal");
 const topModal = new bootstrap.Modal(topModalContainer);
 const btnTopScores = document.getElementById("topScores");
-var tbodyRef = document.getElementById('topScoresTable').getElementsByTagName('tbody')[0];
+var topTableBody = document.getElementById('topScoresTable').getElementsByTagName('tbody')[0];
 
 topModalContainer.addEventListener('shown.bs.modal', () => {
 	getTop10Scores();
 });
 
 btnTopScores.addEventListener('click', _ => {
+	topTableBody.innerHTML = '';
 	topModal.show();
+});
+
+// User Scores
+const userModalContainer = document.getElementById('userScoresModal');
+const userModal = new bootstrap.Modal(userModalContainer);
+const btnUserScores = document.getElementById('userScores');
+var userScoresTitle = document.getElementById('userScoresTitle');
+var userTableBody = document.getElementById('userScoresTable').getElementsByTagName('tbody')[0];
+
+userModalContainer.addEventListener('shown.bs.modal', () => {
+	getUserScores(username);
+});
+
+btnUserScores.addEventListener('click', _ => {
+	userTableBody.innerHTML = '';
+	userScoresTitle.innerText = 'Top Scores - ' + username.charAt(0).toUpperCase() + username.slice(1); 
+	userModal.show();
 });
 
 // Firebase Configuration
@@ -973,7 +990,29 @@ function saveScore(username, score) {
 function getUserScores(username) {
 	var scoresRef = database.ref('scores/' + username);
 	scoresRef.once('value', (snapshot) => {
-		console.log(snapshot.val());
+		var userScores = snapshot.val();
+		var finalScores = [];
+
+		
+
+		Object.keys(userScores).forEach(scoreKey => {
+				finalScores.push(userScores[scoreKey].score);
+		});
+
+		finalScores.sort((a, b) => b - a);
+
+		finalScores.forEach((score, i) => {
+			var newRow = userTableBody.insertRow();
+	
+			// Insert a cell at the end of the row
+			var indexCell = newRow.insertCell();
+			var scoreCell = newRow.insertCell();
+			
+			indexCell.outerHTML = `<th>${i + 1}</th>`;
+	
+			// Append a text node to the cell
+			scoreCell.appendChild(document.createTextNode(score));
+		});
 	});
 }
 
@@ -995,7 +1034,7 @@ function getTop10Scores() {
 		}
 
 		scores.forEach((score, i) => {
-			var newRow = tbodyRef.insertRow();
+			var newRow = topTableBody.insertRow();
 	
 			// Insert a cell at the end of the row
 			var indexCell = newRow.insertCell();
@@ -1008,8 +1047,6 @@ function getTop10Scores() {
 			userCell.appendChild(document.createTextNode(score.username));
 			scoreCell.appendChild(document.createTextNode(score.score));
 		});
-
-		console.log(scores);
 	});
 }
 
