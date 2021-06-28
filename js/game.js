@@ -126,6 +126,14 @@ function createScene() {
 	container = document.getElementById('world');
 	container.appendChild(renderer.domElement);
 
+	const loader = new THREE.GLTFLoader();
+	loader.load('./models/AIRPLANE.glb', function(glb){
+		const plane = glb.scene;
+		plane.scale.set(7,7,7);
+		plane.position.set(0,40,100);
+		scene.add( plane );
+	});
+
 	window.addEventListener('resize', handleWindowResize, false);
 }
 
